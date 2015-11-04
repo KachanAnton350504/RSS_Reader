@@ -39,3 +39,31 @@ QStringList Saver::readLink()
     }
     return list;
 }
+
+bool Saver::isContain(QString str)
+{
+    QString tmp;
+    bool isContain = false;
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        QMessageBox::information(0,"Ошибка открытия файла", "Проверьте наличие файла для чтения");
+    }
+    else
+    {
+        QTextStream in(&file);
+        while(!in.atEnd())
+        {
+            tmp = in.readLine();
+            if(tmp == str)
+            {
+                isContain = true;
+            }
+            else
+            {
+               isContain = false;
+            }
+        }
+        file.close();
+    }
+    return isContain;
+}
