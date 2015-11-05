@@ -1,5 +1,4 @@
-//#include "вынесу часть кода в h файл" - позже
-//
+#include "downloader.h"
 
 Downloader::Downloader(QObject *parent) : QObject(parent)
 {
