@@ -67,3 +67,52 @@ bool Saver::isContain(QString str)
     }
     return isContain;
 }
+
+void Saver::deleteFileFeed(QString str)
+{
+    QString tmpStr;
+    QFile tmpFile("D:\\tmp.txt");
+    if(!tmpFile.open(QFile::WriteOnly | QFile::Text))
+    {
+        QMessageBox::information(0,"Ошибка открытия файла", "Проверьте наличие файла для записи");
+    }
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        QMessageBox::information(0,"Ошибка открытия файла", "Проверьте наличие файла для чтения");
+    }
+    else
+    {
+        QTextStream in(&file);
+        QTextStream out(&tmpFile);
+        while(!in.atEnd())
+        {
+            tmpStr = in.readLine();
+            if(tmpStr != str)
+            {
+                out << tmpStr << "\n";
+            }
+        }
+        file.close();
+        tmpFile.close();
+    }
+    if(!tmpFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        QMessageBox::information(0,"Ошибка открытия файла", "Проверьте наличие файла для записи");
+    }
+    if(!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        QMessageBox::information(0,"Ошибка открытия файла", "Проверьте наличие файла для чтения");
+    }
+    else
+    {
+        QTextStream in(&tmpFile);
+        QTextStream out(&file);
+        while(!in.atEnd())
+        {
+            tmpStr = in.readLine();
+            out << tmpStr << "\n";
+        }
+        file.close();
+        tmpFile.close();
+    }
+}
