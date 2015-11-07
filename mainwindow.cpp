@@ -34,7 +34,22 @@ void MainWindow::itemActivated(QTreeWidgetItem * item)
 
 void MainWindow::fetch()
 {    
-   
+    QUrl url(ui->lineEdit->text());
+    if (!url.isValid())
+    {
+        QMessageBox::information(this, "Warning!!!", "Вы не ввели адрес канала");
+        return;
+    }
+    if(saver.isContain(url.toString()))
+    {
+        QMessageBox::information(this, "Warning!!!", "Канал уже существует в вашем списке");
+    }
+    else
+    {
+        d.doDownload(url);
+        saver.addLink(url.toString());
+        parseXml(url.toString());
+    }
 }
 
 void MainWindow::parseXml(QString urlString)
@@ -104,7 +119,23 @@ void MainWindow::deleteFeed()
 
 void MainWindow::viewFeeds()
 {
-   
+    QUrl url;
+    QStringList listUrl = saver.readLink();
+    if(!listUrl.empty())
+    {
+        QStringList::iterator it = listUrl.begin();
+        for(; it != listUrl.end(); ++it)
+        {
+            url = *it;
+            if (!url.isValid())
+            {
+                QMessageBox::information(this, "Warning!!!", "Ошибка адреса канала");
+                return;
+            }
+            d.doDownload(url);
+            parseXml(url.toString());
+        }
+    }
 }
 
 
