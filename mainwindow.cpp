@@ -27,7 +27,9 @@ void MainWindow::timer_overflow()
 
 void MainWindow::itemActivated(QTreeWidgetItem * item)
 {
-   
+    ui->webView->load(QUrl(item->text(2)));
+    ui->webView->show();
+    ui->deleteButton->setEnabled(true);
 }
 
 void MainWindow::fetch()
@@ -93,7 +95,11 @@ void MainWindow::parseXml(QString urlString)
 
 void MainWindow::deleteFeed()
 {
-    
+    QTreeWidgetItem *itm = ui->treeWidget->currentItem();
+    itm->setHidden(true);
+    ui->deleteButton->setEnabled(false);
+    QString str = ui->treeWidget->currentItem()->text(1);
+    saver.deleteFileFeed(str);
 }
 
 void MainWindow::viewFeeds()
@@ -104,5 +110,8 @@ void MainWindow::viewFeeds()
 
 void MainWindow::updateFeed()
 {
-    
+    ui->treeWidget->clear();
+    viewFeeds();
+    ui->deleteButton->setEnabled(false);
+    ui->webView->close();
 }
