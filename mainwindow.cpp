@@ -7,7 +7,16 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {   
-    
+    ui->setupUi(this);
+    ui->treeWidget->setColumnHidden(1,true);
+    ui->treeWidget->setColumnHidden(2,true);  
+    ui->lineEdit->setPlaceholderText("Enter url of feed");
+    ui->deleteButton->setEnabled(false);
+    viewFeeds();
+    ui->webView->close();
+    timer = new QTimer;
+    QObject::connect(timer,SIGNAL(timeout()), this, SLOT(timer_overflow()));
+    timer->start(1800000);
 }
 
 MainWindow::~MainWindow()
